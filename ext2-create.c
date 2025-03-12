@@ -198,22 +198,34 @@ void write_superblock(int fd) {
 
 	// TODO It's all yours
 	// TODO finish the superblock number setting
-	superblock.s_inodes_count = -1;
-	superblock.s_blocks_count = -1;
+
+	//total counts and free counts with given macros
+	superblock.s_inodes_count = NUM_INODES;
+	superblock.s_blocks_count = NUM_BLOCKS;
 	superblock.s_r_blocks_count = 0;
-	superblock.s_free_blocks_count = -1;
-	superblock.s_free_inodes_count = -1;
-	superblock.s_first_data_block = -1; /* First Data Block */
+	superblock.s_free_blocks_count = NUM_FREE_BLOCKS;
+	superblock.s_free_inodes_count = NUM_FREE_INODES;
+
+	//'always 1 for file systems with 1KB block size' that's us!
+	superblock.s_first_data_block = 1; /* First Data Block */
+
+	//from the shift formula on nongnu.org, we see that size = 1024 << s_log_block_size
+	//that is size = 1024 * 2^(s_log_block_size), so 0 for our purposes! same with frag
+	//from smith.edu^ and nongnu
 	superblock.s_log_block_size = 0;					/* 1024 */
 	superblock.s_log_frag_size = 0;						/* 1024 */
-	superblock.s_blocks_per_group = -1;
-	superblock.s_frags_per_group = -1;
-	superblock.s_inodes_per_group = -1;
+
+	//we only have 1 group
+	superblock.s_blocks_per_group = NUM_BLOCKS;
+	superblock.s_frags_per_group = NUM_BLOCKS;
+	superblock.s_inodes_per_group = NUM_INODES;
+	
 	superblock.s_mtime = 0;				/* Mount time */
 	superblock.s_wtime = current_time;	/* Write time */
+
 	superblock.s_mnt_count         = 0; /* Number of times mounted so far */
 	superblock.s_max_mnt_count     = 0; /* Make this unlimited */
-	superblock.s_magic = -1; /* ext2 Signature */
+	superblock.s_magic = EXT2_SUPER_MAGIC; /* ext2 Signature */ //0xEF53!
 	superblock.s_state             = 0; /* File system is clean */
 	superblock.s_errors            = 0; /* Ignore the error (continue on) */
 	superblock.s_minor_rev_level   = 0; /* Leave this as 0 */
