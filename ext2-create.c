@@ -198,6 +198,8 @@ void write_superblock(int fd) {
 
 	// TODO It's all yours
 	// TODO finish the superblock number setting
+	#define EXT2_VALID_FS 1
+	#define EXT2_ERRORS_CONTINUE 1
 
 	//total counts and free counts with given macros
 	superblock.s_inodes_count = NUM_INODES;
@@ -216,21 +218,21 @@ void write_superblock(int fd) {
 	superblock.s_log_frag_size = 0;						/* 1024 */
 
 	//we only have 1 group
-	superblock.s_blocks_per_group = NUM_BLOCKS;
-	superblock.s_frags_per_group = NUM_BLOCKS;
+	superblock.s_blocks_per_group = 8192;
+	superblock.s_frags_per_group = 8192;
 	superblock.s_inodes_per_group = NUM_INODES;
 	
 	superblock.s_mtime = 0;				/* Mount time */
 	superblock.s_wtime = current_time;	/* Write time */
 
 	superblock.s_mnt_count         = 0; /* Number of times mounted so far */
-	superblock.s_max_mnt_count     = 0; /* Make this unlimited */
+	superblock.s_max_mnt_count     = -1; /* Make this unlimited */
 	superblock.s_magic = EXT2_SUPER_MAGIC; /* ext2 Signature */ //0xEF53!
-	superblock.s_state             = 0; /* File system is clean */
-	superblock.s_errors            = 0; /* Ignore the error (continue on) */
+	superblock.s_state             = EXT2_VALID_FS; /* File system is clean */
+	superblock.s_errors            = EXT2_ERRORS_CONTINUE; /* Ignore the error (continue on) */
 	superblock.s_minor_rev_level   = 0; /* Leave this as 0 */
 	superblock.s_lastcheck = current_time; /* Last check time */
-	superblock.s_checkinterval     = 0; /* Force checks by making them every 1 second */
+	superblock.s_checkinterval     = 1; /* Force checks by making them every 1 second */
 	superblock.s_creator_os        = 0; /* Linux */
 	superblock.s_rev_level         = EXT2_GOOD_OLD_REV; /* Leave this as 0 */
 	superblock.s_def_resuid        = 0; /* root */
