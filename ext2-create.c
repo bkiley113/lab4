@@ -342,6 +342,10 @@ void write_inode_bitmap(int fd)
 	map_value[(HELLO_WORLD_INO - 1) / 8] |= (1 << (HELLO_WORLD_INO - 1) % 8 );
 	map_value[(HELLO_INO - 1) / 8] |= (1 << (HELLO_INO - 1) % 8 );
 
+	//according to nongnu, must reserve inodes 3-10 as well:
+	for (u32 inode = EXT2_ROOT_INO + 1; inode < LOST_AND_FOUND_INO; inode++){
+		map_value[(inode - 1) / 8] |= (1 << ((i - 1) % 8));
+	}
 	memset(map_value + 16, 0xFF, BLOCK_SIZE - 16);
 
 	if (write(fd, map_value, BLOCK_SIZE) != BLOCK_SIZE)
