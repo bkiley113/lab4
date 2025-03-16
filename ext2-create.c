@@ -218,7 +218,7 @@ void write_superblock(int fd) {
 	superblock.s_log_frag_size = 0;						/* 1024 */
 
 	//we only have 1 group
-	superblock.s_blocks_per_group = 8192;
+	superblock.s_blocks_per_group = 8192;			
 	superblock.s_frags_per_group = 8192;
 	superblock.s_inodes_per_group = NUM_INODES;
 	
@@ -297,14 +297,14 @@ void write_block_bitmap(int fd)
 	// TODO It's all yours
 	u8 map_value[BLOCK_SIZE];
 	memset(map_value, 0, BLOCK_SIZE);
-	map_value[SUPERBLOCK_BLOCKNO / 8] |= (1 << (SUPERBLOCK_BLOCKNO % 8));
-	map_value[BLOCK_GROUP_DESCRIPTOR_BLOCKNO / 8] |= (1 << ( BLOCK_GROUP_DESCRIPTOR_BLOCKNO %8));
-	map_value[BLOCK_BITMAP_BLOCKNO / 8] |= (1 << (BLOCK_BITMAP_BLOCKNO %8));
-	map_value[INODE_BITMAP_BLOCKNO /8] |= (1 << (INODE_BITMAP_BLOCKNO % 8));
-	map_value[INODE_TABLE_BLOCKNO / 8 ] |= (1 << (INODE_TABLE_BLOCKNO % 8));
-	map_value[ROOT_DIR_BLOCKNO / 8] |= (1 << (ROOT_DIR_BLOCKNO % 8));
-	map_value[LOST_AND_FOUND_DIR_BLOCKNO / 8] |= (1 << (LOST_AND_FOUND_DIR_BLOCKNO % 8));
-	map_value[HELLO_WORLD_FILE_BLOCKNO / 8 ] |= (1 << (HELLO_WORLD_FILE_BLOCKNO % 8));
+	map_value[(SUPERBLOCK_BLOCKNO - 1) / 8] |= (1 << (SUPERBLOCK_BLOCKNO % 8));
+	map_value[(BLOCK_GROUP_DESCRIPTOR_BLOCKNO - 1 ) / 8] |= (1 << ( BLOCK_GROUP_DESCRIPTOR_BLOCKNO %8));
+	map_value[(BLOCK_BITMAP_BLOCKNO - 1) / 8] |= (1 << (BLOCK_BITMAP_BLOCKNO %8));
+	map_value[(INODE_BITMAP_BLOCKNO - 1) /8] |= (1 << (INODE_BITMAP_BLOCKNO % 8));
+	map_value[(INODE_TABLE_BLOCKNO - 1) / 8 ] |= (1 << (INODE_TABLE_BLOCKNO % 8));
+	map_value[(ROOT_DIR_BLOCKNO - 1) / 8] |= (1 << (ROOT_DIR_BLOCKNO % 8));
+	map_value[(LOST_AND_FOUND_DIR_BLOCKNO - 1) / 8] |= (1 << (LOST_AND_FOUND_DIR_BLOCKNO % 8));
+	map_value[(HELLO_WORLD_FILE_BLOCKNO - 1) / 8 ] |= (1 << (HELLO_WORLD_FILE_BLOCKNO % 8));
 
 	if (write(fd, map_value, BLOCK_SIZE) != BLOCK_SIZE)
 	{
