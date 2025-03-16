@@ -56,7 +56,7 @@ I will detail some notable features of the implementation.
 
 TODO
 ```shell
->sudo unmount mnt       #unmount it
+>sudo umount mnt       #unmount it
 >rmdir mnt              #delete dir 
 >make clean             #clean up binaries
 ```
