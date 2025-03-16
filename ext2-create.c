@@ -333,11 +333,13 @@ void write_inode_bitmap(int fd)
 	//since inodes are numbered starting from 1, we remember to subtract
 
 	memset(map_value, 0, BLOCK_SIZE);
+	map_value[(EXT2_BAD_INO - 1) / 8] |= (1 << (EXT2_BAD_INO - 1) % 8);
 	map_value[(EXT2_ROOT_INO - 1) / 8] |= (1 << (EXT2_ROOT_INO - 1) % 8 );
 	map_value[(LOST_AND_FOUND_INO - 1) / 8] |= (1 << (LOST_AND_FOUND_INO - 1) % 8 );
 	map_value[(HELLO_WORLD_INO - 1) / 8] |= (1 << (HELLO_WORLD_INO - 1) % 8 );
 	map_value[(HELLO_INO - 1) / 8] |= (1 << (HELLO_INO - 1) % 8 );
 
+	memset(map_value + 16, 0xFF, BLOCK_SIZE - 16);
 
 	if (write(fd, map_value, BLOCK_SIZE) != BLOCK_SIZE)
 	{
