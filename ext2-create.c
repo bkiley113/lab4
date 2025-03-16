@@ -322,6 +322,7 @@ void write_inode_bitmap(int fd)
 	u8 map_value[BLOCK_SIZE];
 	//since inodes are numbered starting from 1, we remember to subtract
 
+	memset(map_value, 0, BLOCK_SIZE);
 	map_value[(EXT2_ROOT_INO - 1) / 8] |= (1 << (EXT2_ROOT_INO - 1) % 8 );
 	map_value[(LOST_AND_FOUND_INO - 1) / 8] |= (1 << (LOST_AND_FOUND_INO - 1) % 8 );
 	map_value[(HELLO_WORLD_INO - 1) / 8] |= (1 << (HELLO_WORLD_INO - 1) % 8 );
