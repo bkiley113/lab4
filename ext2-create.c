@@ -314,8 +314,8 @@ void write_block_bitmap(int fd)
 	map_value[(LOST_AND_FOUND_DIR_BLOCKNO - 1) / 8] |= (1 << ((LOST_AND_FOUND_DIR_BLOCKNO - 1) % 8));
 	map_value[(HELLO_WORLD_FILE_BLOCKNO - 1) / 8 ] |= (1 << ((HELLO_WORLD_FILE_BLOCKNO - 1) % 8));
 
-	memset(map_value + 128, 0xFF, BLOCK_SIZE - 128);
-	
+	memset(map_value + 127, 0xFF, BLOCK_SIZE - 128);
+
 	if (write(fd, map_value, BLOCK_SIZE) != BLOCK_SIZE)
 	{
 		errno_exit("write");
