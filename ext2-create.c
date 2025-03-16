@@ -462,21 +462,21 @@ void write_root_dir_block(int fd)
 
 	//lost + found entry
 	struct ext2_dir_entry lost_found_entry = {0};
-	dir_entry_set(parent_entry, LOST_AND_FOUND_INO, "lost+found");
+	dir_entry_set(lost_found_entry, LOST_AND_FOUND_INO, "lost+found");
 	dir_entry_write(lost_found_entry, fd);
 
 	bytes_remaining -= lost_found_entry.rec_len;
 
 	//hello-world entry
 	struct ext2_dir_entry hello_world_entry = {0};
-	dir_entry_set(parent_entry, HELLO_WORLD_INO, "hello-world");
+	dir_entry_set(hello_world_entry, HELLO_WORLD_INO, "hello-world");
 	dir_entry_write(hello_world_entry, fd);
 
 	bytes_remaining -= hello_world_entry.rec_len;
 
 	//hello entry
 	struct ext2_dir_entry hello_entry = {0};
-	dir_entry_set(parent_entry, HELLO_INO, "hello");
+	dir_entry_set(hello_entry, HELLO_INO, "hello");
 	dir_entry_write(hello_entry, fd);
 
 	bytes_remaining -= hello_entry.rec_len;
