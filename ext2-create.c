@@ -308,7 +308,7 @@ void write_block_bitmap(int fd)
 	map_value[(BLOCK_BITMAP_BLOCKNO - 1 ) / 8] |= (1 << ((BLOCK_BITMAP_BLOCKNO - 1) %8));
 	map_value[(INODE_BITMAP_BLOCKNO- 1) /8] |= (1 << ((INODE_BITMAP_BLOCKNO - 1) % 8));
 	for (u32 block = INODE_TABLE_BLOCKNO; block <= INODE_TABLE_SPAN; block++){
-		map_value[block / 8] |= (1 << (block % 8));
+		map_value[(block - 1) / 8] |= (1 << ((block - 1) % 8));
 	}
 	map_value[(ROOT_DIR_BLOCKNO - 1) / 8] |= (1 << ((ROOT_DIR_BLOCKNO - 1) % 8));
 	map_value[(LOST_AND_FOUND_DIR_BLOCKNO - 1) / 8] |= (1 << ((LOST_AND_FOUND_DIR_BLOCKNO - 1) % 8));
