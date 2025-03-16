@@ -294,6 +294,7 @@ void write_block_bitmap(int fd)
 
 	// TODO It's all yours
 	u8 map_value[BLOCK_SIZE];
+	memset(map_value, 0, BLOCK_SIZE);
 	map_value[SUPERBLOCK_BLOCKNO / 8] |= (1 << (SUPERBLOCK_BLOCKNO % 8));
 	map_value[BLOCK_GROUP_DESCRIPTOR_BLOCKNO / 8] |= (1 << ( BLOCK_GROUP_DESCRIPTOR_BLOCKNO %8));
 	map_value[BLOCK_BITMAP_BLOCKNO / 8] |= (1 << (BLOCK_BITMAP_BLOCKNO %8));
