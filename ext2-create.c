@@ -295,13 +295,21 @@ void write_block_bitmap(int fd)
 	}
 
 	// TODO It's all yours
+
+	#define INODE_TABLE_BLOCK_SIZE ((NUM_INODES * 128) / 1024)
+	#define INODE_TABLE_SPAN (INODE_TABLE_BLOCKNO + INODE_TABLE_BLOCK_SIZE - 1)
+
 	u8 map_value[BLOCK_SIZE];
 	memset(map_value, 0, BLOCK_SIZE);
+	
+
 	map_value[(SUPERBLOCK_BLOCKNO - 1) / 8] |= (1 << (SUPERBLOCK_BLOCKNO % 8));
 	map_value[(BLOCK_GROUP_DESCRIPTOR_BLOCKNO - 1 ) / 8] |= (1 << ( BLOCK_GROUP_DESCRIPTOR_BLOCKNO %8));
 	map_value[(BLOCK_BITMAP_BLOCKNO - 1) / 8] |= (1 << (BLOCK_BITMAP_BLOCKNO %8));
 	map_value[(INODE_BITMAP_BLOCKNO - 1) /8] |= (1 << (INODE_BITMAP_BLOCKNO % 8));
-	map_value[(INODE_TABLE_BLOCKNO - 1) / 8 ] |= (1 << (INODE_TABLE_BLOCKNO % 8));
+	for (u32 block = INODE_TABLE_BLOCKNO; block <= INODE_TABLE_SPAN; block++){
+		map_value[block / 8] |= (1 << (block % 8));
+	}
 	map_value[(ROOT_DIR_BLOCKNO - 1) / 8] |= (1 << (ROOT_DIR_BLOCKNO % 8));
 	map_value[(LOST_AND_FOUND_DIR_BLOCKNO - 1) / 8] |= (1 << (LOST_AND_FOUND_DIR_BLOCKNO % 8));
 	map_value[(HELLO_WORLD_FILE_BLOCKNO - 1) / 8 ] |= (1 << (HELLO_WORLD_FILE_BLOCKNO % 8));
